@@ -4,17 +4,33 @@ import epi.test_framework.GenericTest;
 import epi.test_framework.RandomSequenceChecker;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+
+import java.util.*;
+
 public class OnlineSampling {
 
   // Assumption: there are at least k elements in the stream.
   public static List<Integer> onlineRandomSample(Iterator<Integer> stream,
                                                  int k) {
-    // TODO - you fill in here.
-    return Collections.emptyList();
+    List<Integer> sample = new ArrayList<>(k);
+    int count = 0;
+    while(stream.hasNext() && count < k) {
+      sample.add(stream.next());
+      count++;
+    }
+
+    Random rand = new Random();
+
+    while(stream.hasNext()) {
+      int current = stream.next();
+      int pos = rand.nextInt(count + 1);
+      if(pos < k) {
+        sample.set(pos, current);
+      }
+      count++;
+    }
+
+    return sample;
   }
   private static boolean onlineRandomSampleRunner(TimedExecutor executor,
                                                   List<Integer> A, int k)

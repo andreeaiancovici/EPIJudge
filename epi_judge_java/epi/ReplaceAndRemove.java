@@ -7,9 +7,31 @@ import java.util.List;
 public class ReplaceAndRemove {
 
   public static int replaceAndRemove(int size, char[] s) {
-    // TODO - you fill in here.
-    return 0;
+    int countA = 0, countB = 0, watchIdx = 0;
+    for (int i = 0; i < size; i++) {
+      if (s[i] != 'b') {
+        s[watchIdx++] = s[i];
+      } else {
+        countB++;
+      }
+      if (s[i] == 'a') {
+        countA++;
+      }
+    }
+    int newSize = size - countB + countA;
+    watchIdx--;
+    for(int i = newSize - 1; i >= 0; i--) {
+      if (s[watchIdx] != 'a') {
+        s[i] = s[watchIdx];
+      } else {
+        s[i--] = 'd';
+        s[i] = 'd';
+      }
+      watchIdx--;
+    }
+    return newSize;
   }
+
   @EpiTest(testDataFile = "replace_and_remove.tsv")
   public static List<String>
   replaceAndRemoveWrapper(TimedExecutor executor, Integer size, List<String> s)

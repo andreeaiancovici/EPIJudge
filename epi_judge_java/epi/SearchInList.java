@@ -4,7 +4,13 @@ import epi.test_framework.GenericTest;
 public class SearchInList {
 
   public static ListNode<Integer> searchList(ListNode<Integer> L, int key) {
-    // TODO - you fill in here.
+    ListNode<Integer> head = L;
+    while(head != null) {
+      if(head.data == key) {
+        return head;
+      }
+      head = head.next;
+    }
     return null;
   }
   @EpiTest(testDataFile = "search_in_list.tsv")

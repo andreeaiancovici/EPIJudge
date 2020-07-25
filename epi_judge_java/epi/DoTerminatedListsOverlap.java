@@ -7,7 +7,50 @@ public class DoTerminatedListsOverlap {
 
   public static ListNode<Integer>
   overlappingNoCycleLists(ListNode<Integer> l0, ListNode<Integer> l1) {
-    // TODO - you fill in here.
+    int s0 = 0, s1 = 0;
+    ListNode<Integer> t0 = l0;
+    ListNode<Integer> t1 = l1;
+    while(t0 != null) {
+      s0++;
+      t0 = t0.next;
+    }
+    while(t1 != null) {
+      s1++;
+      t1 = t1.next;
+    }
+    if(s0 == s1) {
+      while(l0 != null) {
+        if(l0 == l1) {
+          return l0;
+        }
+        l0 = l0.next;
+        l1 = l1.next;
+      }
+    } else if(s0 < s1) {
+      int diff = s1 - s0;
+      while(l1 != null) {
+        if(l0 == l1) {
+          return l0;
+        }
+        if(diff <= 0) {
+          l0 = l0.next;
+        }
+        l1 = l1.next;
+        diff--;
+      }
+    } else {
+      int diff = s0 - s1;
+      while(l0 != null) {
+        if(l0 == l1) {
+          return l0;
+        }
+        if(diff <= 0) {
+          l1 = l1.next;
+        }
+        l0 = l0.next;
+        diff--;
+      }
+    }
     return null;
   }
   @EpiTest(testDataFile = "do_terminated_lists_overlap.tsv")

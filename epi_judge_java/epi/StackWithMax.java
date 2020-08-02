@@ -3,26 +3,69 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
-import java.util.List;
-import java.util.NoSuchElementException;
+
+import java.util.*;
+
+
 public class StackWithMax {
 
+  private static class Element {
+     private int value;
+     private int count;
+
+     Element(int value, int count) {
+       this.value = value;
+       this.count = count;
+     }
+
+     void setCount(int count) {
+       this.count = count;
+     }
+  }
+
   public static class Stack {
+    private Deque<Integer> stack = new LinkedList<>();
+    private Deque<Element> max = new LinkedList<>();
     public boolean empty() {
-      // TODO - you fill in here.
-      return true;
+      return stack.isEmpty();
     }
+
     public Integer max() {
-      // TODO - you fill in here.
-      return 0;
+      if (max.isEmpty()) {
+        return null;
+      }
+      return max.peek().value;
     }
+
     public Integer pop() {
-      // TODO - you fill in here.
-      return 0;
+      if (stack.isEmpty()) {
+        return null;
+      }
+      if(!max.isEmpty()) {
+        if (stack.peek() == max.peek().value) {
+          if (max.peek().count > 1) {
+            int count = max.peek().count;
+            max.peek().setCount(count - 1);
+          } else {
+            max.pop();
+          }
+        }
+      }
+      return stack.pop();
     }
+
     public void push(Integer x) {
-      // TODO - you fill in here.
-      return;
+      stack.push(x);
+      if (max.isEmpty()) {
+        max.push(new Element(x, 1));
+      } else {
+        if (x > max.peek().value) {
+          max.push(new Element(x, 1));
+        } else if (x == max.peek().value) {
+          int count = max.peek().count;
+          max.peek().setCount(count + 1);
+        }
+      }
     }
   }
   @EpiUserType(ctorParams = {String.class, int.class})

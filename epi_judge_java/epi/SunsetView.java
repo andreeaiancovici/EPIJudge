@@ -1,13 +1,44 @@
 package epi;
 import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
-import java.util.Iterator;
-import java.util.List;
+
+import java.util.*;
+
 public class SunsetView {
+  static class Element {
+    int value;
+    int position;
+
+    Element(int value, int position) {
+      this.value = value;
+      this.position = position;
+    }
+  }
   public static List<Integer>
   examineBuildingsWithSunset(Iterator<Integer> sequence) {
-    // TODO - you fill in here.
-    return null;
+    Deque<Element> last = new LinkedList<>();
+    int index = 0;
+    while(sequence.hasNext()) {
+      int value = sequence.next();
+      Element peek = last.peek();
+      if (peek == null) {
+        last.push(new Element(value, index));
+      } else if(peek.value > value) {
+        last.push(new Element(value, index));
+      } else {
+        while (peek != null && peek.value <= value) {
+          last.pop();
+          peek = last.peek();
+        }
+        last.push(new Element(value, index));
+      }
+      index++;
+    }
+    List<Integer> results = new ArrayList<>();
+    for(Element element : last) {
+      results.add(element.position);
+    }
+    return results;
   }
   @EpiTest(testDataFile = "sunset_view.tsv")
   public static List<Integer>

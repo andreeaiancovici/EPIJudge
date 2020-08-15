@@ -7,23 +7,56 @@ import java.util.List;
 public class CircularQueue {
 
   public static class Queue {
-    public Queue(int capacity) {}
+    private int[] queue;
+    private int first;
+    private int last;
+
+    public Queue(int capacity) {
+      queue = new int[capacity];
+      first = 0;
+      last = 0;
+    }
     public void enqueue(Integer x) {
-      // TODO - you fill in here.
-      return;
+      if (last >= queue.length) {
+        resize();
+      }
+      queue[last++] = x;
     }
     public Integer dequeue() {
-      // TODO - you fill in here.
-      return 0;
+      if (first <= last) {
+        int value = queue[first];
+        queue[first] = 0;
+        if (first < last) {
+          first++;
+        }
+        if (first == last) {
+          first = 0;
+          last = 0;
+        }
+        return value;
+      } else return null;
     }
     public int size() {
-      // TODO - you fill in here.
-      return 0;
+      return last - first;
     }
     @Override
     public String toString() {
-      // TODO - you fill in here.
-      return super.toString();
+      StringBuilder stringBuilder = new StringBuilder();
+      for(int i = 0; i < queue.length; i++) {
+        stringBuilder.append(queue[i]);
+        if(i != queue.length - 1) {
+          stringBuilder.append(", ");
+        }
+      }
+      return stringBuilder.toString();
+    }
+
+    private void resize() {
+      int[] temp = queue.clone();
+      queue = new int[2 * queue.length];
+      System.arraycopy(temp, first, queue, 0, temp.length - first);
+      last-=first;
+      first = 0;
     }
   }
   @EpiUserType(ctorParams = {String.class, int.class})

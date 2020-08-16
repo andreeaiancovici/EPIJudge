@@ -3,21 +3,62 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
-import java.util.List;
-import java.util.NoSuchElementException;
+
+import java.util.*;
 
 public class QueueWithMax {
+
+  static class Element {
+    int value;
+    int count;
+
+    Element(int value, int count) {
+      this.value = value;
+      this.count = count;
+    }
+  }
+
+  private Deque<Integer> queue = new LinkedList<>();
+  private Deque<Element> queueWithMax = new LinkedList<>();
+
   public void enqueue(Integer x) {
-    // TODO - you fill in here.
-    return;
+    queue.add(x);
+    Element element = queueWithMax.peekLast();
+    if (element != null) {
+      if (x > element.value) {
+        while (element != null && x > element.value) {
+          queueWithMax.pollLast();
+          element = queueWithMax.peekLast();
+        }
+        queueWithMax.addLast(new Element(x, 1));
+      } else if (x == element.value) {
+        element.count++;
+      } else {
+        queueWithMax.addLast(new Element(x, 1));
+      }
+    } else {
+      queueWithMax.addLast(new Element(x, 1));
+    }
   }
   public Integer dequeue() {
-    // TODO - you fill in here.
-    return 0;
+    Integer value = queue.pollFirst();
+    if(value != null) {
+      Element element = queueWithMax.peekFirst();
+      if(value == element.value) {
+        if (element.count == 1) {
+          queueWithMax.pollFirst();
+        } else if (element.count > 1) {
+          element.count--;
+        }
+      }
+      return value;
+    } else return null;
   }
   public Integer max() {
-    // TODO - you fill in here.
-    return 0;
+    Element element = queueWithMax.peekFirst();
+    if(element != null) {
+      return element.value;
+    } else return null;
   }
   @EpiUserType(ctorParams = {String.class, int.class})
   public static class QueueOp {

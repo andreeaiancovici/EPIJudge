@@ -4,13 +4,29 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
+
+import java.util.*;
+
 public class LowestCommonAncestor {
   public static BinaryTreeNode<Integer> LCA(BinaryTreeNode<Integer> tree,
                                             BinaryTreeNode<Integer> node0,
                                             BinaryTreeNode<Integer> node1) {
-    // TODO - you fill in here.
-    return null;
+    if(tree == null) {
+      return null;
+    }
+    if(tree.data.equals(node0.data) || tree.data.equals(node1.data)) {
+      return tree;
+    }
+    BinaryTreeNode<Integer> left = LCA(tree.left, node0, node1);
+    BinaryTreeNode<Integer> right = LCA(tree.right, node0, node1);
+
+    if(left != null && right != null) {
+      return tree;
+    }
+
+    return (left != null) ? left : right;
   }
+
   @EpiTest(testDataFile = "lowest_common_ancestor.tsv")
   public static int lcaWrapper(TimedExecutor executor,
                                BinaryTreeNode<Integer> tree, Integer key0,

@@ -3,6 +3,9 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
+
+import java.util.concurrent.atomic.*;
+
 public class KthNodeInTree {
   public static class BinaryTreeNode<T> {
     public T data;
@@ -20,9 +23,25 @@ public class KthNodeInTree {
 
   public static BinaryTreeNode<Integer>
   findKthNodeBinaryTree(BinaryTreeNode<Integer> tree, int k) {
-    // TODO - you fill in here.
-    return null;
+    return inOrder(tree, k);
   }
+
+  private static BinaryTreeNode<Integer> inOrder(BinaryTreeNode<Integer> tree, int k) {
+    if (tree == null) {
+      return null;
+    }
+    BinaryTreeNode<Integer> left = null;
+    if (tree.left != null && (tree.left.size + 1) - k >= 0) {
+      left = inOrder(tree.left, k);
+    }
+    k = tree.left != null ? k - (tree.left.size + 1) : k - 1;
+    if (k == 0) {
+      return tree;
+    }
+    BinaryTreeNode<Integer> right = inOrder(tree.right, k);
+    return left != null ? left : right;
+  }
+
   public static BinaryTreeNode<Integer>
   convertToTreeWithSize(BinaryTree<Integer> original) {
     if (original == null)

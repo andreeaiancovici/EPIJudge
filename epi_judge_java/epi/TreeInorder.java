@@ -9,6 +9,8 @@ public class TreeInorder {
 
   public static List<Integer> inorderTraversal(BinaryTreeNode<Integer> tree) {
     List<Integer> inorder = new ArrayList<>();
+
+
     if(tree != null) {
       Deque<BinaryTreeNode<Integer>> stack = new LinkedList<>();
       BinaryTreeNode<Integer> node = tree;

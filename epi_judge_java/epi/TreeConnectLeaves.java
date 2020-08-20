@@ -3,16 +3,30 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
+import java.util.*;
+
 public class TreeConnectLeaves {
 
   public static List<BinaryTreeNode<Integer>>
   createListOfLeaves(BinaryTreeNode<Integer> tree) {
-    // TODO - you fill in here.
-    return Collections.emptyList();
+    List<BinaryTreeNode<Integer>> result = new ArrayList<>();
+    buildListOfLeaves(tree, result);
+    return result;
   }
+
+  private static void buildListOfLeaves(BinaryTreeNode<Integer> tree, List<BinaryTreeNode<Integer>> result) {
+    if(tree == null) {
+      return;
+    }
+    if(tree.left == null && tree.right == null) {
+      result.add(tree);
+    }
+    buildListOfLeaves(tree.left, result);
+    buildListOfLeaves(tree.right, result);
+  }
+
+
   @EpiTest(testDataFile = "tree_connect_leaves.tsv")
   public static List<Integer>
   createListOfLeavesWrapper(TimedExecutor executor,

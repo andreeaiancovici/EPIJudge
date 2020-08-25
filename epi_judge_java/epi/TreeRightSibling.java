@@ -2,8 +2,9 @@ package epi;
 import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TimedExecutor;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
+
 public class TreeRightSibling {
   public static class BinaryTreeNode<T> {
     public T data;
@@ -14,8 +15,17 @@ public class TreeRightSibling {
   }
 
   public static void constructRightSibling(BinaryTreeNode<Integer> tree) {
-    // TODO - you fill in here.
-    return;
+    while(tree != null) {
+      BinaryTreeNode<Integer> iter = tree;
+      while (iter != null && iter.left != null) {
+        iter.left.next = iter.right;
+        if (iter.next != null) {
+          iter.right.next = iter.next.left;
+        }
+        iter = iter.next;
+      }
+      tree = tree.left;
+    }
   }
   private static BinaryTreeNode<Integer>
   cloneTree(BinaryTree<Integer> original) {

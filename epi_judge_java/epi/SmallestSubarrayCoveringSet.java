@@ -3,9 +3,9 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
+
 public class SmallestSubarrayCoveringSet {
 
   // Represent subarray by starting and ending indices, inclusive.
@@ -19,10 +19,46 @@ public class SmallestSubarrayCoveringSet {
     }
   }
 
-  public static Subarray findSmallestSubarrayCoveringSet(List<String> paragraph,
-                                                         Set<String> keywords) {
-    // TODO - you fill in here.
-    return new Subarray(0, 0);
+  public static Subarray findSmallestSubarrayCoveringSet(List<String> paragraph, Set<String> keywords) {
+      Map<String, Integer> keywordsCount = new HashMap<>();
+      keywords.forEach(keyword -> keywordsCount.put(keyword, 0));
+      Subarray subarray = new Subarray(-1, -1);
+      int start = 0, end = 0, keywordCount = 0;
+      while (start < paragraph.size() && end < paragraph.size()) {
+          if (keywordCount == keywordsCount.size()) {
+              if ((subarray.end == -1 && subarray.start == -1) || end - start < subarray.end - subarray.start) {
+                  subarray.start = start;
+                  subarray.end = end;
+              }
+              String word = paragraph.get(start);
+              if (keywordsCount.containsKey(word)) {
+                  int count = keywordsCount.get(word);
+                  if (count == 1) {
+                      keywordCount--;
+                  }
+                  keywordsCount.put(word, count - 1);
+              }
+              start++;
+              if(keywordCount < keywordsCount.size()) {
+                  end++;
+              }
+          } else {
+              String word = paragraph.get(end);
+              if (keywordsCount.containsKey(word)) {
+                  int count = keywordsCount.get(word);
+                  if (count == 0) {
+                      keywordsCount.put(word, 1);
+                      keywordCount++;
+                  } else {
+                      keywordsCount.put(word, count + 1);
+                  }
+              }
+              if(keywordCount < keywordsCount.size()) {
+                  end++;
+              }
+          }
+      }
+      return subarray;
   }
   @EpiTest(testDataFile = "smallest_subarray_covering_set.tsv")
   public static int findSmallestSubarrayCoveringSetWrapper(

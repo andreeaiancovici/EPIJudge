@@ -6,8 +6,17 @@ import java.util.List;
 public class SortedArrayRemoveDups {
   // Returns the number of valid entries after deletion.
   public static int deleteDuplicates(List<Integer> A) {
-    // TODO - you fill in here.
-    return 0;
+    if(A.isEmpty()) {
+      return 0;
+    }
+    int indexToReplace = 0;
+    for(int i = 1; i < A.size(); i++) {
+      if(!A.get(i).equals(A.get(i - 1))) {
+        indexToReplace++;
+        A.set(indexToReplace, A.get(i));
+      }
+    }
+    return indexToReplace + 1;
   }
   @EpiTest(testDataFile = "sorted_array_remove_dups.tsv")
   public static List<Integer> deleteDuplicatesWrapper(TimedExecutor executor,

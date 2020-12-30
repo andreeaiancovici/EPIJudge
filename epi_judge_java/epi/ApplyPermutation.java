@@ -6,18 +6,15 @@ import java.util.Collections;
 import java.util.List;
 public class ApplyPermutation {
   public static void applyPermutation(List<Integer> perm, List<Integer> A) {
+    int next;
     for (int i = 0; i < A.size(); i++) {
-      int position = i;
-      while(perm.get(position) >= 0) {
-        Collections.swap(A, i, perm.get(position));
-        int prev = position;
-        position = perm.get(prev);
-        perm.set(prev, perm.get(prev) - perm.size());
+      next = i;
+      while (perm.get(next) >= 0) {
+        Collections.swap(A, i, next);
+        int temp = perm.get(next);
+        perm.set(next, perm.get(next) - perm.size());
+        next = temp;
       }
-    }
-
-    for (int i = 0; i < perm.size(); i++) {
-      perm.set(i, perm.get(i) + perm.size());
     }
   }
 

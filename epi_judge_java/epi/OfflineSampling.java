@@ -12,21 +12,10 @@ import java.util.Random;
 
 public class OfflineSampling {
     public static void randomSampling(int k, List<Integer> A) {
-        if (k == 0 || A.size() == 0 || (k >= A.size())) {
-            return;
-        }
-
-        Random rand = new Random();
-        if (k <= (A.size() - 1) / 2) {
-            for (int i = 0; i < k; i++) {
-                int r = rand.nextInt(A.size() - i) + i;
-                Collections.swap(A, r, i);
-            }
-        } else {
-            for (int i = A.size() - 1; i >= k; i--) {
-                int r = rand.nextInt(i + 1);
-                Collections.swap(A, r, i);
-            }
+        Random random = new Random();
+        for (int i = 0; k > 0; i++, k--) {
+            int index = random.nextInt(A.size() - i);
+            Collections.swap(A, index + i, i);
         }
     }
 

@@ -10,27 +10,22 @@ import java.util.*;
 public class OnlineSampling {
 
   // Assumption: there are at least k elements in the stream.
-  public static List<Integer> onlineRandomSample(Iterator<Integer> stream,
-                                                 int k) {
-    List<Integer> sample = new ArrayList<>(k);
-    int count = 0;
-    while(stream.hasNext() && count < k) {
-      sample.add(stream.next());
-      count++;
+  public static List<Integer> onlineRandomSample(Iterator<Integer> stream, int k) {
+    List<Integer> result = new ArrayList<>(k);
+    for(int i = 0; i < k; i++) {
+      result.add(stream.next());
     }
-
-    Random rand = new Random();
-
+    Random random = new Random();
+    int numSeenSoFar = k;
     while(stream.hasNext()) {
-      int current = stream.next();
-      int pos = rand.nextInt(count + 1);
-      if(pos < k) {
-        sample.set(pos, current);
+      Integer x = stream.next();
+      numSeenSoFar++;
+      int index = random.nextInt(numSeenSoFar);
+      if(index < k) {
+        result.set(index, x);
       }
-      count++;
     }
-
-    return sample;
+    return result;
   }
   private static boolean onlineRandomSampleRunner(TimedExecutor executor,
                                                   List<Integer> A, int k)

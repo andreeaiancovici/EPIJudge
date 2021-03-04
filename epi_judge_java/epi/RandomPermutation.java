@@ -12,16 +12,16 @@ import java.util.Random;
 public class RandomPermutation {
 
   public static List<Integer> computeRandomPermutation(int n) {
-    List<Integer> result = new ArrayList<>();
-    for(int i = 0; i < n; i++) {
-      result.add(i);
-    }
-    Random r = new Random();
-    for(int i = 0; i < n; i++) {
-      int j = r.nextInt(n - i) + i;
-      Collections.swap(result, i, j);
-    }
-    return result;
+      List<Integer> result = new ArrayList<>(n);
+      for(int i = 0; i < n; i++) {
+        result.add(i);
+      }
+      Random random = new Random();
+      for(int i = 0; i < n; i++) {
+        int index = random.nextInt(n - i) + i;
+        Collections.swap(result, i, index);
+      }
+      return result;
   }
 
   private static int factorial(int n) {
